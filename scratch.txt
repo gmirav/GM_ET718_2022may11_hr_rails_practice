@@ -152,4 +152,50 @@ app/views/resumes/show.html.erb to Replace the hard-coded Skills table in the te
 
 
 rails generate model Skill title level resume:references
-rails generate model Languages language level resume:references
+rails generate model Language language level resume:references
+
+
+
+has_many :skills, dependent: :destroy
+has_many :languages, dependent: :destroy
+
+
+
+resources :resumes do
+    resources :skills
+end
+resources :resumes do
+    resources :languages
+end
+
+
+
+rails generate controller Skills
+rails generate controller Languages
+
+
+
+class SkillsController < ApplicationController
+  def create
+    @resume = Resume.find(params[:resume_id])
+    @skill = @resume.skills.create(skill_params)
+    redirect_to resume_path(@resume)
+  end
+ 
+  private
+    def skill_params
+      params.require(:skill).permit(:name, :level)
+    end
+end
+class LanguagesController < ApplicationController
+  def create
+    @resume = Resume.find(params[:resume_id])
+    @language = @resume.languages.create(language_params)
+    redirect_to resume_path(@resume)
+  end
+ 
+  private
+    def language_params
+      params.require(:language).permit(:language, :level)
+    end
+end

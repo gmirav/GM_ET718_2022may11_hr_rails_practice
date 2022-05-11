@@ -1,0 +1,13 @@
+<%= form_for([@resume, @resume.languages.build]) do |f| %>
+  <p>
+    <%= f.label :language %><br>
+    <%= f.text_field :language %>
+  </p>
+  <p>
+    <%= f.label :level %><br>
+    <%= f.text_area :level %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
